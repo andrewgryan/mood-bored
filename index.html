@@ -38,6 +38,7 @@
     <script type="module">
       import marked from "https://cdn.jsdelivr.net/npm/marked@5.0.2/+esm";
       const markdown = "# Marked in the browser\n\nRendered by **marked**.";
+      console.log(marked);
       document.getElementById("content").innerHTML = marked.parse(markdown);
     </script>
   </body>
