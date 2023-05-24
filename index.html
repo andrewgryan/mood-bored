@@ -7,6 +7,10 @@
       content="width=device-width, initial-scale=1.0, interactive-widget=resizes-content"
     />
     <title>Mood bored</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/highlightjs-themes@1.0.0/tomorrow-night-blue.min.css"
+    />
     <link rel="stylesheet" href="style.css" />
     <style>
       body {
@@ -32,14 +36,23 @@
   <body>
     <div id="app">
       <div id="content"></div>
-      <textarea></textarea>
+      <textarea id="text"></textarea>
     </div>
 
     <script type="module">
-      import marked from "https://cdn.jsdelivr.net/npm/marked@5.0.2/+esm";
-      const markdown = "# Marked in the browser\n\nRendered by **marked**.";
-      console.log(marked);
-      document.getElementById("content").innerHTML = marked.parse(markdown);
+      import * as marked from "https://esm.run/marked";
+      import DOMPurify from "https://esm.run/dompurify";
+      import hljs from "https://esm.run/highlight.js";
+
+      document.getElementById("text").addEventListener("input", (ev) => {
+        const markdown = ev.currentTarget.value;
+        document.getElementById("content").innerHTML = DOMPurify.sanitize(
+          marked.parse(markdown, { headerIds: false, mangle: false })
+        );
+
+        // Syntax-highlight code blocks
+        hljs.highlightAll();
+      });
     </script>
   </body>
 </html>
