@@ -15,10 +15,13 @@
 
       #app {
         height: 100svh;
-        background-color: yellow;
         display: flex;
         flex-direction: column;
         justify-content: end;
+      }
+
+      #content {
+        height: 50svh;
       }
 
       textarea {
@@ -28,38 +31,14 @@
   </head>
   <body>
     <div id="app">
+      <div id="content"></div>
       <textarea></textarea>
     </div>
 
-    <script>
-      // Stupid gesture code
-      let xDown = null;
-      let yDown = null;
-
-      const touchStart = (ev) => {
-        let touch = ev.touches[0];
-        xDown = touch.clientX;
-        yDown = touch.clientY;
-      };
-
-      const touchMove = (ev) => {
-        if (!xDown || !yDown) {
-          return;
-        }
-
-        let xUp = ev.touches[0].clientX;
-        let yUp = ev.touches[0].clientY;
-
-        if (xUp > xDown) {
-          document.body.style.backgroundColor = "blue";
-        } else {
-          document.body.style.backgroundColor = "green";
-        }
-      };
-
-      // Wire up events
-      document.addEventListener("touchstart", touchStart);
-      document.addEventListener("touchmove", touchMove);
+    <script type="module">
+      import marked from "https://cdn.jsdelivr.net/npm/marked@5.0.2/+esm";
+      const markdown = "# Marked in the browser\n\nRendered by **marked**.";
+      document.getElementById("content").innerHTML = marked.parse(markdown);
     </script>
   </body>
 </html>
