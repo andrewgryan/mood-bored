@@ -23,6 +23,8 @@
       textarea {
         height: 50svh;
         font-family: var(--font-mono);
+        padding: var(--size-2);
+        margin: var(--size-2);
       }
 
       pre {
@@ -61,6 +63,8 @@
 
       document.getElementById("text").addEventListener("input", (ev) => {
         const markdown = ev.currentTarget.value;
+
+        // Update content innerHTML
         document.getElementById("content").innerHTML = DOMPurify.sanitize(
           marked.parse(markdown, { headerIds: false, mangle: false })
         );
@@ -68,6 +72,9 @@
         // Syntax-highlight code blocks
         hljs.highlightAll();
       });
+
+      // On page load
+      hljs.highlightAll();
     </script>
   </body>
 </html>
