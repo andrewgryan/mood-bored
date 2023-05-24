@@ -93,6 +93,14 @@
         updateContentArea(markdown);
         hljs.highlightAll();
       }
+
+      // Support click outside close
+      document.addEventListener("click", (ev) => {
+        const editor = document.getElementById("text");
+        if (!editor.contains(ev.target)) {
+          editor.style.display = "none";
+        }
+      });
     </script>
   </body>
 </html>
