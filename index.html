@@ -6,5 +6,33 @@
     <title>Mood bored</title>
     <link rel="stylesheet" href="style.css" />
   </head>
-  <body></body>
+  <body>
+    <script>
+      let xDown = null;
+      let yDown = null;
+
+      const touchStart = (ev) => {
+        let touch = ev.touches[0];
+        xDown = touch.clientX;
+        yDown = touch.clientY;
+      };
+
+      const touchMove = (ev) => {
+        if (!xDown || !yDown) {
+          return;
+        }
+
+        let xUp = ev.touches[0].clientX;
+        let yUp = ev.touches[0].clientY;
+
+        if (xUp > xDown) {
+          alert("Up");
+        }
+      };
+
+      // Wire up events
+      document.addEventListener("touchstart", touchStart);
+      document.addEventListener("touchmove", touchMove);
+    </script>
+  </body>
 </html>
