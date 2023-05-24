@@ -63,20 +63,32 @@
       import DOMPurify from "https://esm.run/dompurify";
       import hljs from "https://esm.run/highlight.js";
 
+      const updateContentArea = (markdown) => {
+        document.getElementById("content").innerHTML = DOMPurify.sanitize(
+          marked.parse(markdown, { headerIds: false, mangle: false })
+        );
+      };
+
       document.getElementById("text").addEventListener("input", (ev) => {
         const markdown = ev.currentTarget.value;
 
         // Update content innerHTML
-        document.getElementById("content").innerHTML = DOMPurify.sanitize(
-          marked.parse(markdown, { headerIds: false, mangle: false })
-        );
+        updateContentArea(markdown);
 
         // Syntax-highlight code blocks
         hljs.highlightAll();
+
+        // Save to localStorage
+        localStorage.setItem("markdown", markdown);
       });
 
       // On page load
-      hljs.highlightAll();
+      const markdown = localStorage.getItem("markdown");
+      if (markdown) {
+        document.getElementById("text").value = markdown;
+        updateContentArea(markdown);
+        hljs.highlightAll();
+      }
     </script>
   </body>
 </html>
