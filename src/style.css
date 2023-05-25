@@ -1,3 +1,10 @@
+/* Open props */
+@import "https://unpkg.com/open-props";
+@import "https://unpkg.com/open-props/normalize.min.css";
+
+/* HighlightJS */
+@import "https://cdn.jsdelivr.net/npm/highlightjs-themes@1.0.0/tomorrow-night-blue.min.css";
+
 #app {
   min-height: 100svh;
   display: flex;
