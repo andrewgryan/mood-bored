@@ -4,38 +4,38 @@ import hljs from "https://esm.run/highlight.js";
 import van from "https://vanjs.org/code/van-0.11.10.min.js";
 
 const { div, textarea } = van.tags;
-van.add(
-  document.getElementById("app"),
-  div({ id: "content" }),
-  textarea({ id: "text" })
-);
 
-const updateContentArea = (markdown) => {
-  document.getElementById("content").innerHTML = DOMPurify.sanitize(
+const toHTML = (markdown) => {
+  let div = document.createElement("div");
+  div.id = "content";
+  div.innerHTML = DOMPurify.sanitize(
     marked.parse(markdown, { headerIds: false, mangle: false })
+  );
+
+  // Apply syntax highlights
+  div.querySelectorAll("code").forEach((el) => {
+    // then highlight each
+    hljs.highlightElement(el);
+  });
+
+  // Persist markdown changes
+  localStorage.setItem("markdown", markdown);
+  return div;
+};
+
+const App = () => {
+  const text = van.state(localStorage.getItem("markdown") || "");
+  return div(
+    van.bind(text, toHTML),
+    textarea({
+      id: "text",
+      value: text,
+      oninput: (ev) => (text.val = ev.target.value),
+    })
   );
 };
 
-document.getElementById("text").addEventListener("input", (ev) => {
-  const markdown = ev.currentTarget.value;
-
-  // Update content innerHTML
-  updateContentArea(markdown);
-
-  // Syntax-highlight code blocks
-  hljs.highlightAll();
-
-  // Save to localStorage
-  localStorage.setItem("markdown", markdown);
-});
-
-// On page load
-const markdown = localStorage.getItem("markdown");
-if (markdown) {
-  document.getElementById("text").value = markdown;
-  updateContentArea(markdown);
-  hljs.highlightAll();
-}
+van.add(document.getElementById("app"), App());
 
 // Support click outside close
 document.addEventListener("click", (ev) => {
