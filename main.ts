@@ -1,31 +1,22 @@
-import { serve } from "https://deno.land/std@0.182.0/http/server.ts";
+import { Application, Router } from "https://deno.land/x/oak@v12.5.0/mod.ts";
 
-const BLOG_ROUTE = new URLPattern({ pathname: "/blog/:id" });
-const CSS_ROUTE = new URLPattern({ pathname: "/style.css" });
+const app = new Application();
+const router = new Router();
 
-serve(async (req: Request): Promise<Response> => {
-  let match = CSS_ROUTE.exec(req.url);
-  if (match) {
-    const text = await Deno.readTextFile("style.css");
-    return new Response(text, {
-      status: 200,
-      headers: { "content-type": "text/css; charset=utf-8" },
-    });
-  }
-
-  // Blog post route
-  match = BLOG_ROUTE.exec(req.url);
-  if (match) {
-    const id = match.pathname.groups.id;
-    return new Response(`Blog: ${id}`, {
-      status: 200,
-      headers: { "content-type": "text/plain; charset=utf-8" },
-    });
-  }
-
-  const text = await Deno.readTextFile("index.html");
-  return new Response(text, {
-    status: 200,
-    headers: { "content-type": "text/html; charset=utf-8" },
-  });
+router.get("/", async (ctx) => {
+  ctx.response.body = await Deno.readTextFile("index.html");
+  ctx.response.headers.set("content-type", "text/html; charset=utf-8");
+  ctx.response.status = 200;
 });
+router.get("/style.css", async (ctx) => {
+  ctx.response.body = await Deno.readTextFile("style.css");
+  ctx.response.headers.set("content-type", "text/css; charset=utf-8");
+  ctx.response.status = 200;
+});
+
+app.use(router.routes());
+app.use(router.allowedMethods());
+
+const port = 8000;
+console.log(`listening: http://localhost:${port}`);
+await app.listen({ port });
