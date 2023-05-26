@@ -14,8 +14,11 @@ const toHTML = (markdown) => {
 
   // Apply syntax highlights
   div.querySelectorAll("code").forEach((el) => {
-    // then highlight each
-    hljs.highlightElement(el);
+    try {
+      hljs.highlightElement(el);
+    } catch (e) {
+      console.log(e);
+    }
   });
 
   // Persist markdown changes
