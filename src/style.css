@@ -38,20 +38,10 @@
   margin: var(--size-2);
 }
 
-#text {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 50svh;
-  padding: var(--size-2);
-  margin: var(--size-2);
-}
-
 textarea {
-  width: 100%;
   font-family: var(--font-mono);
-  flex: ;
+  margin: var(--size-2);
+  padding: var(--size-2);
 }
 
 pre {

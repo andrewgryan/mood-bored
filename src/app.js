@@ -13,7 +13,7 @@ const toHTML = (markdown) => {
   );
 
   // Apply syntax highlights
-  div.querySelectorAll("code").forEach((el) => {
+  div.querySelectorAll("pre code").forEach((el) => {
     try {
       hljs.highlightElement(el);
     } catch (e) {
