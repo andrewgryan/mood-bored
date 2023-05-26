@@ -2,6 +2,7 @@ import * as marked from "https://esm.run/marked";
 import DOMPurify from "https://esm.run/dompurify";
 import hljs from "https://esm.run/highlight.js";
 import van from "https://vanjs.org/code/van-0.11.10.min.js";
+import Nav from "./Nav.js";
 
 const { button, div, textarea } = van.tags;
 
@@ -42,14 +43,17 @@ const Tab = (left, right) => {
 const App = () => {
   const text = van.state(localStorage.getItem("markdown") || "");
   const cls = (flag) => (flag ? "" : "hidden");
-  return Tab(
-    (visible) => div({ class: cls(visible) }, van.bind(text, toHTML)),
-    (visible) =>
-      textarea({
-        class: cls(visible),
-        value: text,
-        oninput: (ev) => (text.val = ev.target.value),
-      })
+  return div(
+    Nav(),
+    Tab(
+      (visible) => div({ class: cls(visible) }, van.bind(text, toHTML)),
+      (visible) =>
+        textarea({
+          class: cls(visible),
+          value: text,
+          oninput: (ev) => (text.val = ev.target.value),
+        })
+    )
   );
 };
 

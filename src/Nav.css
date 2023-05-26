@@ -1,0 +1,15 @@
+.Nav ul {
+  display: flex;
+  padding-inline: 0;
+  list-style-type: none;
+}
+
+.Nav li {
+  padding-inline-start: 0;
+}
+
+.Nav a {
+  display: block;
+  padding-block: var(--size-2);
+  padding-inline: var(--size-4);
+}
