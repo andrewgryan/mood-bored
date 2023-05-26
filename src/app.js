@@ -66,7 +66,7 @@ const addCountry = async (country) => {
   console.log(country, { error });
 };
 
-const Home = () => {
+const _Home = () => {
   const text = van.state(localStorage.getItem("markdown") || "");
   const cls = (flag) => (flag ? "" : "hidden");
   return div(
@@ -82,6 +82,10 @@ const Home = () => {
         })
     )
   );
+};
+
+const Home = () => {
+  return Nav();
 };
 
 // Single-page application routing
