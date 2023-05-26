@@ -1,3 +1,8 @@
+.Nav {
+  color: var(--text-2);
+  background-color: var(--surface-3);
+}
+
 .Nav ul {
   display: flex;
   padding-inline: 0;
@@ -10,6 +15,7 @@
 
 .Nav a {
   display: block;
+  color: var(--text-2);
   padding-block: var(--size-2);
   padding-inline: var(--size-4);
 }
