@@ -1,5 +1,5 @@
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
-import { Application, Router } from "https://deno.land/x/oak@v12.5.0/mod.ts";
+import { createClient } from "supabase";
+import { Application, Router } from "oak";
 
 const app = new Application();
 const router = new Router();
