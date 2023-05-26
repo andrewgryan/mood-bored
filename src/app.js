@@ -3,11 +3,10 @@ import DOMPurify from "https://esm.run/dompurify";
 import hljs from "https://esm.run/highlight.js";
 import van from "https://vanjs.org/code/van-0.11.10.min.js";
 
-const { div, textarea } = van.tags;
+const { button, div, textarea } = van.tags;
 
 const toHTML = (markdown) => {
   let div = document.createElement("div");
-  div.id = "content";
   div.innerHTML = DOMPurify.sanitize(
     marked.parse(markdown, { headerIds: false, mangle: false })
   );
@@ -26,24 +25,32 @@ const toHTML = (markdown) => {
   return div;
 };
 
+const Tab = (left, right) => {
+  const index = van.state(0);
+  return div(
+    { class: "tab" },
+    div(
+      { class: "tab__row" },
+      button({ onclick: () => (index.val = 0) }, "Preview"),
+      button({ onclick: () => (index.val = 1) }, "Code")
+    ),
+    van.bind(index, (index) => left(index == 0)),
+    van.bind(index, (index) => right(index == 1))
+  );
+};
+
 const App = () => {
   const text = van.state(localStorage.getItem("markdown") || "");
-  return div(
-    van.bind(text, toHTML),
-    textarea({
-      id: "text",
-      value: text,
-      oninput: (ev) => (text.val = ev.target.value),
-    })
+  const cls = (flag) => (flag ? "" : "hidden");
+  return Tab(
+    (visible) => div({ class: cls(visible) }, van.bind(text, toHTML)),
+    (visible) =>
+      textarea({
+        class: cls(visible),
+        value: text,
+        oninput: (ev) => (text.val = ev.target.value),
+      })
   );
 };
 
 van.add(document.getElementById("app"), App());
-
-// Support click outside close
-document.addEventListener("click", (ev) => {
-  const editor = document.getElementById("text");
-  if (!editor.contains(ev.target)) {
-    editor.style.display = "none";
-  }
-});
