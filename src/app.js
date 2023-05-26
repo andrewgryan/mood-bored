@@ -4,7 +4,7 @@ import hljs from "https://esm.run/highlight.js";
 import van from "https://vanjs.org/code/van-0.11.10.min.js";
 // import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import Navigo from "https://esm.run/navigo";
-import Nav from "./Nav.js";
+import Nav from "./components/Nav.js";
 import CountryPicker from "./CountryPicker.js";
 
 // VanJS
