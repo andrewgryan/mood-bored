@@ -3,20 +3,21 @@ import { Application, Router } from "https://deno.land/x/oak@v12.5.0/mod.ts";
 const app = new Application();
 const router = new Router();
 
-const proxy = async (ctx, next) => {
-  try {
-    await ctx.send({
-      path: "/",
-      root: "./src",
-      index: "index.html",
-    });
-  } catch {
-    await next();
-  }
-};
-
-router.get("/blog", proxy);
-router.get("/blog/:id", proxy);
+// 404 by supporting SPA routes explicitly
+const supportedRoutes = ["/blog", "/blog/:id"];
+supportedRoutes.map((pattern) =>
+  router.get(pattern, async (ctx, next) => {
+    try {
+      await ctx.send({
+        path: "/",
+        root: "./src",
+        index: "index.html",
+      });
+    } catch {
+      await next();
+    }
+  })
+);
 
 app.use(async (ctx, next) => {
   try {
