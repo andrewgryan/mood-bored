@@ -7,13 +7,6 @@ import Navigo from "https://esm.run/navigo";
 import Nav from "./Nav.js";
 import CountryPicker from "./CountryPicker.js";
 
-// Navigo
-const router = new Navigo("/");
-router.on("/blog/:id", (match) => {
-  console.log(match);
-});
-router.resolve();
-
 // VanJS
 const { button, div, textarea } = van.tags;
 
@@ -91,4 +84,17 @@ const App = () => {
   );
 };
 
-van.add(document.getElementById("app"), App());
+// Single-page application routing
+const router = new Navigo("/");
+router.on("/", () => {
+  van.add(document.getElementById("app"), App());
+});
+
+router.on("/blog/:id", (match) => {
+  van.add(
+    document.getElementById("app"),
+    div(Nav(), div("Blog " + match.data.id))
+  );
+});
+
+router.resolve();
