@@ -8,7 +8,7 @@ import Nav from "./Nav.js";
 import CountryPicker from "./CountryPicker.js";
 
 // VanJS
-const { button, div, textarea } = van.tags;
+const { h1, button, div, textarea } = van.tags;
 
 const toHTML = (markdown) => {
   let div = document.createElement("div");
@@ -66,7 +66,7 @@ const addCountry = async (country) => {
   console.log(country, { error });
 };
 
-const App = () => {
+const Home = () => {
   const text = van.state(localStorage.getItem("markdown") || "");
   const cls = (flag) => (flag ? "" : "hidden");
   return div(
@@ -86,15 +86,37 @@ const App = () => {
 
 // Single-page application routing
 const router = new Navigo("/");
-router.on("/", () => {
-  van.add(document.getElementById("app"), App());
-});
 
-router.on("/blog/:id", (match) => {
-  van.add(
-    document.getElementById("app"),
-    div(Nav(), div("Blog " + match.data.id))
+const Blog = () => {
+  return div(
+    Nav(),
+    h1("Blog menu!"),
+    button({ onclick: () => router.navigate("/") }, "Home"),
+    button({ onclick: () => router.navigate("/blog/1") }, "Blog 1")
   );
-});
+};
 
-router.resolve();
+const Post = (id) => {
+  return div(Nav(), div("Blog " + id));
+};
+
+const App = () => {
+  const page = van.state(div(""));
+
+  router.on("/", () => {
+    page.val = Home();
+  });
+
+  router.on("/blog", () => {
+    page.val = Blog();
+  });
+
+  router.on("/blog/:id", (match) => {
+    page.val = Post(match.data.id);
+  });
+
+  router.resolve();
+  return page;
+};
+
+van.add(document.getElementById("app"), App());

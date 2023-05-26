@@ -3,9 +3,20 @@ import { Application, Router } from "oak";
 const app = new Application();
 const router = new Router();
 
-router.get("/blog/:id", async (ctx) => {
-  await ctx.send({ path: "/", root: "./src", index: "index.html" });
-});
+const proxy = async (ctx, next) => {
+  try {
+    await ctx.send({
+      path: "/",
+      root: "./src",
+      index: "index.html",
+    });
+  } catch {
+    await next();
+  }
+};
+
+router.get("/blog", proxy);
+router.get("/blog/:id", proxy);
 
 app.use(async (ctx, next) => {
   try {

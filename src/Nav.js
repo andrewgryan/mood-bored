@@ -12,7 +12,11 @@ const Nav = () => {
   ];
   return div(
     { class: "Nav" },
-    ul(links.map(({ href, content }) => li(a({ href }, content))))
+    ul(
+      links.map(({ href, content }) =>
+        li(a({ href, "data-navigo": true }, content))
+      )
+    )
   );
 };
 
