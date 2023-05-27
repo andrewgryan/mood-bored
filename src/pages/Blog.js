@@ -1,5 +1,6 @@
 import van from "https://vanjs.org/code/van-0.11.10.min.js";
 import supabase from "../supabase.js";
+import { inject } from "../markdown.js";
 import Nav from "../components/Nav.js";
 import sheet from "./Blog.css" assert { type: "css" };
 document.adoptedStyleSheets = [...document.adoptedStyleSheets, sheet];
@@ -7,7 +8,7 @@ document.adoptedStyleSheets = [...document.adoptedStyleSheets, sheet];
 const { a, div, h1, main, ul, li, pre } = van.tags;
 
 export const Post = (id) => {
-  const content = van.state("");
+  const content = van.state(div());
 
   supabase
     .from("posts")
@@ -15,11 +16,11 @@ export const Post = (id) => {
     .eq("id", id)
     .then(({ data, error }) => {
       if (data.length > 0) {
-        content.val = data[0].post;
+        content.val = inject(div(), data[0].post);
       }
     });
 
-  return div(Nav(), pre(content));
+  return div(Nav(), content);
 };
 
 const Blog = () => {
