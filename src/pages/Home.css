@@ -1,0 +1,26 @@
+:root {
+  --clip-corner-size: var(--size-10);
+  --clip-corner: polygon(
+    calc(100% - var(--clip-corner-size)) 0,
+    100% var(--clip-corner-size),
+    100% 100%,
+    0 100%,
+    0 0
+  );
+}
+.Home {
+  background-color: white;
+  min-height: 100svh;
+  display: grid;
+  grid-template-rows: auto 1fr;
+}
+
+.Home main {
+  background-color: var(--surface-2);
+  clip-path: var(--clip-corner);
+  margin: var(--size-2);
+}
+
+.clip-wrap {
+  box-shadow: var(--shadow-5);
+}
