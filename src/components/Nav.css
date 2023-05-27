@@ -1,4 +1,6 @@
 .Nav {
+  display: flex;
+  justify-content: space-between;
   color: var(--text-2);
   background-color: var(--surface-3);
 }
