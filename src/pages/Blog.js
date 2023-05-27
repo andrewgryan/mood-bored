@@ -5,22 +5,48 @@ import Nav from "../components/Nav.js";
 import sheet from "./Blog.css" assert { type: "css" };
 document.adoptedStyleSheets = [...document.adoptedStyleSheets, sheet];
 
-const { a, div, h1, main, ul, li, pre } = van.tags;
+const { a, div, h1, main, ul, li, button } = van.tags;
 
 export const Post = (id) => {
+  const user = van.state(null);
+  const author = van.state("");
   const content = van.state(div());
+
+  supabase.auth.onAuthStateChange((event, session) => {
+    if (event == "SIGNED_IN") {
+      user.val = session.user.id;
+    }
+    if (event == "SIGNED_OUT") {
+      user.val = null;
+    }
+  });
+
+  user.onnew((id) => {
+    console.log(id);
+  });
 
   supabase
     .from("posts")
-    .select("post, id")
+    .select("post, id, author")
     .eq("id", id)
     .then(({ data, error }) => {
       if (data.length > 0) {
+        author.val = data[0].author;
         content.val = inject(div(), data[0].post);
       }
     });
 
-  return div(Nav(), content);
+  return div(
+    Nav(),
+    van.bind(user, author, (user, author) => {
+      if (user == author) {
+        return button({ onclick: () => console.log("edit") }, "Edit");
+      } else {
+        return div();
+      }
+    }),
+    content
+  );
 };
 
 const Blog = () => {
