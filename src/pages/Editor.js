@@ -2,14 +2,8 @@ import van from "https://vanjs.org/code/van-0.11.10.min.js";
 import * as marked from "https://esm.run/marked";
 import DOMPurify from "https://esm.run/dompurify";
 import hljs from "https://esm.run/highlight.js";
-import CountryPicker from "../CountryPicker.js";
 
 const { button, div, textarea } = van.tags;
-
-const addCountry = async (country) => {
-  const { error } = await supabase.from("countries").insert({ name: country });
-  console.log(country, { error });
-};
 
 const Tab = (left, right) => {
   const index = van.state(0);
@@ -50,7 +44,6 @@ const Editor = () => {
   const cls = (flag) => (flag ? "" : "hidden");
   return div(
     Nav(),
-    CountryPicker({ oncountry: addCountry }),
     Tab(
       (visible) => div({ class: cls(visible) }, van.bind(text, toHTML)),
       (visible) =>
